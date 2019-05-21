@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# clean
+rm -f *.deb-*
+rm -f *.captainci-deb-*
+
+# git branch
+GIT_BRANCH=""
+GIT_BRANCH_FILE=".captainci-env-GIT_BRANCH"
+if [ -f "$GIT_BRANCH_FILE" ]; then
+        GIT_BRANCH='+'`cat $GIT_BRANCH_FILE | tr -d '\n'`
+fi
+
+# debian/changelog
+head -1 debian/changelog | cut -d " " -f1 | tr -d '\n' > .captainci-deb-changelog
+echo -n " (" >> .captainci-deb-changelog
+head -1 debian/changelog  | cut -d"(" -f2 | cut -d")" -f1 | cut -d"." -f1,2 | tr -d '\n' >> .captainci-deb-changelog
+echo -n "." >> .captainci-deb-changelog
+V3=$((`head -1 debian/changelog  | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | cut -d"." -f3` + 1)); echo -n ${V3} >> .captainci-deb-changelog
+echo -n ${GIT_BRANCH} >> .captainci-deb-changelog
+echo ") unstable; urgency=low" >> .captainci-deb-changelog
+echo >> .captainci-deb-changelog
+captainci-gitlog
+cat .captainci-deb-gitlog.md >> .captainci-deb-changelog
+echo >> .captainci-deb-changelog
+echo -n " -- $(sed -n '/^Maintainer:/s/^.*: //p' debian/control)  " >> .captainci-deb-changelog
+date -R >> .captainci-deb-changelog
+echo >> .captainci-deb-changelog
+cat debian/changelog >> .captainci-deb-changelog
+echo >> .captainci-deb-changelog
+mv .captainci-deb-changelog debian/changelog
+
+# version
+head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | tr -d '\n' > version.properties
+cat version.properties > .captainci-deb-version
+
+# CHANGELOG.md
+export DEB_CHANGELOG_YML=/etc/changelog-md/changelog-md.yml
+/usr/bin/changelog-md.py

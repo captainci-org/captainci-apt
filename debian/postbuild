@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# move to /tmp
+mv -v ../`cat debian/changelog | head -1 | cut -d" " -f1`_`cat version.properties`*.deb /tmp/

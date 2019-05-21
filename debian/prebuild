@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -f .captainci-deb-*
+rm -f .deb-*
