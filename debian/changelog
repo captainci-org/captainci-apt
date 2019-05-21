@@ -1,0 +1,13 @@
+captainci-apt (0.1.12) unstable; urgency=low
+
+  * Added: move from captainci-cli to this git repo [#c7e2793a2c50ad7e352e307cd4b42e59643f4278](https://github.com/erikni/captainci-apt/commit/c7e2793a2c50ad7e352e307cd4b42e59643f4278)
+  * Initial commit [#ec727b19c9aa4cbe3128bedf701e775df516eeb3](https://github.com/erikni/captainci-apt/commit/ec727b19c9aa4cbe3128bedf701e775df516eeb3)
+
+ -- Erik Brozek <erik@brozek.name>  Tue, 21 May 2019 16:11:42 +0200
+
+captainci-apt (0.1.1) unstable; urgency=low
+
+  * Added: debian package
+
+ -- Erik Brozek <erik@brozek.name>  Tue, 21 May 2019 16:36:41 +0200
+

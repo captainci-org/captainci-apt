@@ -1,0 +1,6 @@
+bin/captainci-apt.sh 		opt/captainci/bin/
+bin/captainci-template.sh	opt/captainci/bin/
+
+debian/build 			opt/captainci/debian/
+debian/prebuild 		opt/captainci/debian/
+debian/postbuild 		opt/captainci/debian/

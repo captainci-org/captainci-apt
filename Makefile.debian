@@ -1,0 +1,10 @@
+changelog:
+	@sh debian/prebuild
+	@sh debian/build
+
+build: changelog
+	@debian/rules binary
+	@sh debian/postbuild
+
+clean:
+	@sh debian/postbuild

@@ -96,6 +96,7 @@ PACKAGE_NAME=`echo $2 | cut -d"=" -f1`
 PACKAGE_VERSION=`echo $2 | cut -d"=" -f2`
 PACKAGE_FILE="${PACKAGE_NAME}_${PACKAGE_VERSION}_all.${PACKAGE_EXT}"
 PACKAGE_DIR1=`echo "${PACKAGE_NAME:0:1}"`
+PACKAGE_DOMAIN="captainci.com"
 
 # install
 if [ "$ACTION" = "install" ]; then
@@ -103,11 +104,18 @@ if [ "$ACTION" = "install" ]; then
 	echo "* apt remote ${ACTION} ${PACKAGE_NAME} (${PACKAGE_VERSION}) ... "
 	cd /tmp/;
 
+	# package domain
+	if [ -f "/etc/domain" ]; then
+		PACKAGE_DOMAIN=`cat /etc/domain | head 1 | tr -d '\n'`
+	fi
+	PACKAGE_APT="http://apt.${PACKAGE_DOMAIN}:9010"
+
 	# summary 
 	echo "* package name    : $PACKAGE_NAME ";
 	echo "* package version : $PACKAGE_VERSION ";
 	#echo "* package file    : $PACKAGE_FILE ";
-	#echo "* package dir     : $PACKAGE_DIR1 ";
+	#echo "* package domain  : $PACKAGE_DOMAIN ";
+	#echo "* package apt     : $PACKAGE_APT ";
 
 	PACKAGE_LOCAL=`echo $PACKAGE_FILE | cut -c1-1`
 	if [ "$PACKAGE_LOCAL" = "/" ]; then
@@ -134,7 +142,7 @@ if [ "$ACTION" = "install" ]; then
 
 			echo -n "* download package: $PACKAGE_FILE ... ";
 			PACKAGE_INSTALL_TYPE="net"
-			wget -q  http://apt.dr-max.net:9010/local/pool/local/${PACKAGE_DIR1}/${PACKAGE_NAME}/${PACKAGE_FILE};
+			wget -q  ${PACKAGE_APT}/local/pool/local/${PACKAGE_DIR1}/${PACKAGE_NAME}/${PACKAGE_FILE};
 		fi	
 		
 		echo ".done";

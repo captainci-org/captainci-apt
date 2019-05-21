@@ -2,7 +2,7 @@
 
 GIT_REPO="captainci-apt"
 TMP_DIR="/tmp/${GIT_REPO}"
-INST_DIR="/tmp/opt/captainci"
+INST_DIR="/opt/captainci"
 
 echo "start ... "
 echo
@@ -67,25 +67,31 @@ echo "${GIT_REPO} ... "
 
 echo -n "* clean ... "
 sudo rm -rf $TMP_DIR
-echo " done"
+sudo rm -f /usr/bin/$GIT_REPO
+echo "done."
 
 echo -n "* git clone ... "
-git clone https://github.com/erikni/${GIT_REPO}.git
+git clone -q https://github.com/erikni/${GIT_REPO}.git
+echo "done."
 
 echo -n "* create dirs ... "
 sudo mkdir -p $INST_DIR/bin/
 sudo mkdir -p $INST_DIR/debian/
-echo " done"
+echo "done."
 
-echo -n "* script install  ... "
-sudo cp -v $TMP_DIR/bin/*.sh        $INST_DIR/bin/.
-sudo cp -v $TMP_DIR/debian/*build*  $INST_DIR/debian/.
+echo -n "* script install ... "
+sudo cp $TMP_DIR/bin/*.sh        $INST_DIR/bin/.
+sudo cp $TMP_DIR/debian/*build*  $INST_DIR/debian/.
 sudo chmod 755 $INST_DIR/bin/*.sh
-echo " done"
+echo "done."
+
+echo -n "* symlink install ... "
+ln -s $INST_DIR/bin/${GIT_REPO}.sh /usr/bin/$GIT_REPO
+echo "done."
 
 echo -n "* clean ... "
 sudo rm -rf $TMP_DIR
-echo " done"
+echo "done."
 
 echo
 echo "end."

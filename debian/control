@@ -1,0 +1,12 @@
+Source: captainci-apt
+Section: admin
+Priority: optional
+Maintainer: Erik Brozek <erik@brozek.name>
+Build-Depends: debhelper, cdbs, rsync
+Standards-Version: 3.8.0
+
+Package: captainci-apt
+Architecture: all
+Depends: apt
+Description: CaptainCI APT
+ CaptainCI interface for APT & build package

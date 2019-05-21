@@ -1,0 +1,9 @@
+# captainci
+.deb-*
+.captainci-*
+
+# debian
+debian/captainci-apt.substvars
+debian/captainci-apt.debhelper.log
+debian/captainci-apt/
+debian/files
