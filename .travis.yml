@@ -9,7 +9,7 @@ before_install:
         - sudo apt-get install apt -y
         - sudo apt-get install cdbs debhelper dpkg-dev -y
         - sudo dpkg-buildpackage -uc -us
-        - for file in `ls ../captain-apt_*_all.deb`; do sudo dpkg -i $file; done;
+        - for file in `ls ../captainci-apt_*_all.deb`; do sudo dpkg -i $file; done;
 
 # command to run tests
 script: captainci-apt show dpkg-dev
