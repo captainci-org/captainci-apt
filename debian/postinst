@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+GROUP=$(echo ${DPKG_MAINTSCRIPT_PACKAGE} | cut -d"-" -f1)
+NAME=$(echo ${DPKG_MAINTSCRIPT_PACKAGE} | cut -d"-" -f2)
+
 if [ x"$1" != "xconfigure" ]; then
     exit 0
 fi
