@@ -27,9 +27,11 @@ PACKAGE=$2
 
 USER=`whoami`
 
+FAKEROOT="fakeroot"
 SUDO="sudo"
 if [ "$USER" = "root" ]; then
 	SUDO="";
+	FAKEROOT=""
 fi
 
 # Package Management Basics: apt, yum, dnf, pkg
@@ -106,7 +108,7 @@ if [ "$ACTION" = "install" ]; then
 
 	# package domain
 	if [ -f "/etc/domain" ]; then
-		PACKAGE_DOMAIN=`cat /etc/domain | head 1 | tr -d '\n'`
+		PACKAGE_DOMAIN=`cat /etc/domain | head -1 | tr -d '\n'`
 	fi
 	PACKAGE_APT="http://apt.${PACKAGE_DOMAIN}:9010"
 
@@ -188,26 +190,26 @@ elif [ "$ACTION" = "show" ] || [ "$ACTION" = "info" ]; then
 elif [ "$ACTION" = "update" ] || [ "$ACTION" = "check-update" ]; then
 
 	echo "$ $APT_UPDATE ... ";
- 	$APT_UPDATE
+ 	$SUDO $APT_UPDATE
 
 # upgrade all package
 elif [ "$ACTION" = "upgrade" ]; then
 
 	echo "$ $APT_UPGRADE ... ";
- 	$APT_UPGRADE
+ 	$SUDO $APT_UPGRADE
 
 # remove
 elif [ "$ACTION" = "remove" ]; then
 
   	echo "$ $APT_REMOVE $2 ... ";
-  	$APT_REMOVE $2;
+  	$SUDO $APT_REMOVE $2;
 
 # build
 elif [ "$ACTION" = "build" ]; then
 
 	# clean
-	rm -f .captainci-deb-*
-	rm -f .deb-*
+	rm -f .captainci-${PACKAGE_EXT}-*
+	rm -f .${PACKAGE_EXT}-*
 
 	# template
 	echo "$ captainci-template "
@@ -234,15 +236,20 @@ elif [ "$ACTION" = "build" ]; then
 		chmod 755 debian/postrm
 	fi
 
+	# debian/compat
+	if [ "debian/compat" ]; then
+		cp /opt/captainci/debian/compat debian/
+	fi
+
 	# debian/prebuild
 	echo "$ debian/prebuild "
 	if [ -f "debian/prebuild" ]; then
 		chmod 755 debian/prebuild
-		fakeroot ./debian/prebuild
+		$FAKEROOT ./debian/prebuild
 	else
 		cp /opt/captainci/debian/prebuild debian/
 		chmod 755 debian/prebuild
-		fakeroot ./debian/prebuild
+		$FAKEROOT ./debian/prebuild
 		rm debian/prebuild
 	fi
 	echo
@@ -251,30 +258,32 @@ elif [ "$ACTION" = "build" ]; then
 	echo "$ debian/build "
 	if [ -f "debian/build" ]; then
 		chmod 755 debian/build
-		fakeroot ./debian/build
+		$FAKEROOT ./debian/build
 	else
 		cp /opt/captainci/debian/build debian/
 		chmod 755 debian/build
-		fakeroot ./debian/build
+		$FAKEROOT ./debian/build
 		rm debian/build
 	fi
 	echo
 
 	# debian/rules
-	echo "$ debian/rules "
-	chmod 755 debian/rules
-	fakeroot ./debian/rules binary
-	echo
+	if [ -f "debian/rules" ]; then
+		echo "$ debian/rules "
+		chmod 755 debian/rules
+		$FAKEROOT ./debian/rules binary
+		echo
+	fi
 
 	# debian/postbuild
 	echo "$ debian/postbuild "
 	if [ -f "debian/postbuild" ]; then
 		chmod 755 debian/postbuild
-		fakeroot ./debian/postbuild
+		$FAKEROOT ./debian/postbuild
 	else
 		cp /opt/captainci/debian/postbuild debian/
 		chmod 755 debian/postbuild
-		fakeroot ./debian/postbuild
+		$FAKEROOT ./debian/postbuild
 		rm debian/postbuild
 	fi
 	echo
@@ -292,8 +301,8 @@ elif [ "$ACTION" = "build" ]; then
 elif [ "$ACTION" = "clean" ]; then
 
 	# clean
-	rm -f .captainci-deb-*
-	rm -f .deb-*
+	rm -f .captainci-${PACKAGE_EXT}-*
+	rm -f .${PACKAGE_EXT}-*
 
 # help
 elif [ "$ACTION" = "help" ]; then
@@ -307,34 +316,40 @@ elif [ "$ACTION" = "help" ]; then
 	echo "											"
 	echo " DESCRIPTION									"
 	echo "       captainci-apt provides a high-level commandline interface for the 		"
-	echo "       package management system.							"
+	echo "       package management system (APT).						"
 	echo "											"
 	echo " OPTIONS										"
 	echo "											"
 	echo "       clean 									"
-	echo "           clean temporary files 							"
+	echo "           Clean temporary files 							"
 	echo "											"
-	echo "       install 									"
-	echo "           install is followed by one or more packages desired for 		"
+	echo "       install <PACKAGE_NAME=PACKAGE_VERSION>					"
+	echo "           Install is followed by one or more packages desired for 		"
 	echo "           installation or upgrading. Each package is a package name, 		"
 	echo "           not a fully qualified filename						"
 	echo "											"
-	echo "       search									"
-	echo "          search can be used to search for the given regex(7) term(s)		" 
-	echo "          in the list of available packages and display matches			"
+	echo "       remove <PACKAGE_NAME>							"
+	echo "           Removing a package removes all packaged data, but leaves usually small "
+	echo "           (modified) user configuration files behind, in case the remove was 	"
+	echo "           an accident								"
 	echo "											"
-	echo "       show 									"
+	echo "       search <PACKAGE_NAME>							"
+	echo "           Search can be used to search for the given regex(7) term(s)		" 
+	echo "           in the list of available packages and display matches			"
+	echo "											"
+	echo "       show <PACKAGE_NAME>							"
 	echo "           Show information about the given package(s) including its dependencies	"
 	echo "											"
 	echo "       update 									"
-	echo "           update is used to resynchronize the package index files from their source "
+	echo "           Update is used to resynchronize the package index files 		"
+	echo "		from their source 							"
 	echo "											"
 	echo "       upgrade 									"
-	echo "           upgrade is used to install the newest versions of all packages 	"
+	echo "           Upgrade is used to install the newest versions of all packages 	"
 	echo "           currently installed on the system from the sources 			"
 	echo "											"
 	echo "       help 									"
-	echo "           display this help and exit						"
+	echo "           Display this help and exit						"
 	echo "											"
 
 
@@ -342,7 +357,7 @@ elif [ "$ACTION" = "help" ]; then
 else
 
 	echo " 											"
-	echo " Usage: 										"
+	echo " USAGE: 										"
 	echo " 											"
 	echo " captainci-apt help								"
        	echo "       captainci-apt help								"

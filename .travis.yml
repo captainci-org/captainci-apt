@@ -1,5 +1,8 @@
 sudo: enabled
 
+os:
+	- linux
+
 branches:
         only:
         - master

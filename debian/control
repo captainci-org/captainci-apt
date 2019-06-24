@@ -7,6 +7,6 @@ Standards-Version: 3.8.0
 
 Package: captainci-apt
 Architecture: all
-Depends: apt
+Depends: apt, fakeroot
 Description: CaptainCI APT
  CaptainCI interface for APT & build package
