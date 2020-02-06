@@ -80,8 +80,8 @@ sudo mkdir -p $INST_DIR/debian/
 echo "done."
 
 echo -n "* script install ... "
-sudo cp $TMP_DIR/bin/*.sh        $INST_DIR/bin/.
-sudo cp $TMP_DIR/debian/*build*  $INST_DIR/debian/.
+sudo cp -v $TMP_DIR/bin/*.sh        $INST_DIR/bin/.
+sudo cp -v $TMP_DIR/debian/*build*  $INST_DIR/debian/.
 sudo chmod 755 $INST_DIR/bin/*.sh
 echo "done."
 
