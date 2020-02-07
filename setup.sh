@@ -93,5 +93,7 @@ echo -n "* clean ... "
 sudo rm -rf $TMP_DIR
 echo "done."
 
+echo -n "* changelog.md ... "
+
 echo
 echo "end."

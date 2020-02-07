@@ -35,5 +35,5 @@ head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | tr -d
 cat version.properties > .captainci-deb-version
 
 # CHANGELOG.md
-export DEB_CHANGELOG_YML=/etc/changelog-md/changelog-md.yml
-/usr/bin/changelog-md.py
+export DEB_CHANGELOG_YML=/etc/changelog-md/changelog_md.yml
+/usr/bin/changelog_md.py
