@@ -44,7 +44,7 @@ elif [ -f "/etc/debian_version" ]; then
 
 # other
 elif [ -f "/etc/os-release" ]; then
-	DISTNAME=`cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2`;
+	DISTNAME=$(cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2);
 	DISTFILE="/etc/os-release";
 	
 else
@@ -54,17 +54,17 @@ fi
 
 # vars
 if [ "$DISTNAME" = "redhat" ] || [ "$DISTNAME" = "centos" ] || [ "$DISTNAME" = "fedora" ]; then
-	CAPTAINCI_PACKAGE_NAME=`head -1 debian/changelog | cut -d " " -f1 | tr -d '\n'`
-	CAPTAINCI_PACKAGE_VERSION=`head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | cut -d"+" -f1`
-	CAPTAINCI_PACKAGE_AUTHOR=`cat debian/control.captainci | grep "Maintainer:" | cut -d":" -f2 | cut -d "<" -f1`
+	CAPTAINCI_PACKAGE_NAME=$(head -1 debian/changelog | cut -d " " -f1 | tr -d '\n')
+	CAPTAINCI_PACKAGE_VERSION=$(head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | cut -d"+" -f1)
+	CAPTAINCI_PACKAGE_AUTHOR=$(cat debian/control.captainci | grep "Maintainer:" | cut -d":" -f2 | cut -d "<" -f1)
 else
-	CAPTAINCI_PACKAGE_NAME=`head -1 debian/changelog | cut -d " " -f1 | tr -d '\n'`
-	CAPTAINCI_PACKAGE_VERSION=`head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | cut -d"+" -f1`
-	CAPTAINCI_PACKAGE_AUTHOR=`cat debian/control.captainci | grep "Maintainer:" | cut -d":" -f2 | cut -d "<" -f1`
+	CAPTAINCI_PACKAGE_NAME=$(head -1 debian/changelog | cut -d " " -f1 | tr -d '\n')
+	CAPTAINCI_PACKAGE_VERSION=$(head -1 debian/changelog | cut -d"(" -f2 | cut -d")" -f1 | cut -d"-" -f1 | cut -d"+" -f1)
+	CAPTAINCI_PACKAGE_AUTHOR=$(cat debian/control.captainci | grep "Maintainer:" | cut -d":" -f2 | cut -d "<" -f1)
 fi;
 
-CAPTAINCI_PACKAGE_GROUP=`echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f1`
-CAPTAINCI_PACKAGE_USER=`echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f2`
+CAPTAINCI_PACKAGE_GROUP=$(echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f1)
+CAPTAINCI_PACKAGE_USER=$(echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f2)
 CAPTAINCI_PACKAGE_DIR="\/opt\/$CAPTAINCI_PACKAGE_GROUP\/$CAPTAINCI_PACKAGE_USER"
 
 CAPTAINCI_DOMAIN="captainci.com"
@@ -77,9 +77,9 @@ CAPTAINCI_DOMAIN="captainci.com"
 #echo
 
 # files
-for origfile in `find . | grep ".captainci" | grep -v ".captainci.yml"`; do
+for origfile in $(find . | grep ".captainci" | grep -v ".captainci.yml"); do
 
-	savefile=`echo $origfile | rev |  cut -d"." -f2,3,4 | rev`
+	savefile=$(echo $origfile | rev |  cut -d"." -f2,3,4 | rev)
 
 	if [ "$savefile" != "./" ]; then
 		echo "* '$origfile' -> '$savefile' "

@@ -30,7 +30,7 @@ elif [ -f "/etc/debian_version" ]; then
 
 # other
 elif [ -f "/etc/os-release" ]; then
-	DISTNAME=`cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2`;
+	DISTNAME=$(cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2);
 	DISTFILE="/etc/os-release";
 	
 else
@@ -87,7 +87,10 @@ sudo chmod 755 $INST_DIR/bin/*.sh
 echo "done."
 
 echo -n "* symlink install ... "
-ln -s $INST_DIR/bin/${GIT_REPO}.sh /usr/bin/$GIT_REPO
+rm -f /usr/bin/$GIT_REPO
+rm -f /usr/bin/captainci-template
+ln -s $INST_DIR/bin/captainci_apt.sh /usr/bin/$GIT_REPO
+ln -s $INST_DIR/bin/captainci_template.sh /usr/bin/captainci-template
 echo "done."
 
 echo -n "* clean ... "

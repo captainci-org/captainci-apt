@@ -25,7 +25,7 @@
 ACTION=$1
 PACKAGE=$2
 
-USER=`whoami`
+USER=$(whoami)
 
 FAKEROOT="fakeroot"
 SUDO="sudo"
@@ -59,7 +59,7 @@ elif [ -f "/etc/debian_version" ]; then
 
 # other
 elif [ -f "/etc/os-release" ]; then
-	DISTNAME=`cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2`;
+	DISTNAME=$(cat /etc/os-release  | grep -v "_ID=" | grep "ID=" | cut -d"=" -f2);
 	DISTFILE="/etc/os-release";
 	
 else
@@ -94,10 +94,10 @@ else
 fi
 
 
-PACKAGE_NAME=`echo $2 | cut -d"=" -f1`
-PACKAGE_VERSION=`echo $2 | cut -d"=" -f2`
+PACKAGE_NAME=$(echo $2 | cut -d"=" -f1)
+PACKAGE_VERSION=$(echo $2 | cut -d"=" -f2)
 PACKAGE_FILE="${PACKAGE_NAME}_${PACKAGE_VERSION}_all.${PACKAGE_EXT}"
-PACKAGE_DIR1=`echo "${PACKAGE_NAME:0:1}"`
+PACKAGE_DIR1=$(echo "${PACKAGE_NAME:0:1}")
 PACKAGE_DOMAIN="captainci.com"
 
 # install
@@ -108,7 +108,7 @@ if [ "$ACTION" = "install" ]; then
 
 	# package domain
 	if [ -f "/etc/domain" ]; then
-		PACKAGE_DOMAIN=`cat /etc/domain | head -1 | tr -d '\n'`
+		PACKAGE_DOMAIN=$(cat /etc/domain | head -1 | tr -d '\n')
 	fi
 	PACKAGE_APT="http://apt.${PACKAGE_DOMAIN}:9010"
 
@@ -119,7 +119,7 @@ if [ "$ACTION" = "install" ]; then
 	#echo "* package domain  : $PACKAGE_DOMAIN ";
 	#echo "* package apt     : $PACKAGE_APT ";
 
-	PACKAGE_LOCAL=`echo $PACKAGE_FILE | cut -c1-1`
+	PACKAGE_LOCAL=$(echo $PACKAGE_FILE | cut -c1-1)
 	if [ "$PACKAGE_LOCAL" = "/" ]; then
 
 		PACKAGE_LOCAL_FILE=$PACKAGE_FILE
@@ -213,7 +213,7 @@ elif [ "$ACTION" = "build" ]; then
 
 	# template
 	echo "$ captainci-template "
-	/opt/captainci/bin/captainci-template.sh
+	captainci-template
 	echo
 
 	# debian/prerm
@@ -290,8 +290,8 @@ elif [ "$ACTION" = "build" ]; then
 
 	# version
 	if [ -f "version.properties" ]; then
-		export PACKAGE_VERSION=`cat version.properties | tr -d '\n'`
-		export CAPTAINCI_PACKAGE_VERSION=`cat version.properties | tr -d '\n'`
+		export PACKAGE_VERSION=$(cat version.properties | tr -d '\n')
+		export CAPTAINCI_PACKAGE_VERSION=$(cat version.properties | tr -d '\n')
 
 		echo "$ export PACKAGE_VERSION=${CAPTAINCI_PACKAGE_VERSION}"
 		echo
