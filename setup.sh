@@ -1,6 +1,7 @@
 #!/bin/bash
 
 GIT_REPO="captainci-apt"
+GIT_OWNER="captainci-org"
 TMP_DIR="/tmp/${GIT_REPO}"
 INST_DIR="/opt/captainci"
 
@@ -71,7 +72,7 @@ sudo rm -f /usr/bin/$GIT_REPO
 echo "done."
 
 echo -n "* git clone ... "
-git clone -q https://github.com/erikni/${GIT_REPO}.git
+git clone -q https://github.com/${GIT_OWNER}/${GIT_REPO}.git
 echo "done."
 
 echo -n "* create dirs ... "
@@ -95,6 +96,10 @@ echo "done."
 
 echo -n "* changelog.md ... "
 wget -O - https://raw.githubusercontent.com/erikni/debian-changelog.md/develop/setup.sh | bash
+echo "done."
+
+echo -n "* gitlog ... "
+wget -O - https://raw.githubusercontent.com/captainci-org/captainci-gitlog/develop/setup.sh | bash
 echo "done."
 
 echo
