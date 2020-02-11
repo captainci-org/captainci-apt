@@ -159,18 +159,18 @@ if [ "$ACTION" = "install" ]; then
 			echo "$ yum install $PACKAGE_LOCAL_FILE";
 			yum install $PACKAGE_LOCAL_FILE;
 		elif [ "$DISTNAME" = "fedora" ]; then
-			echo "$ dnf install $PACKAGE_LOCAL_FILE";
-			dnf install $PACKAGE_LOCAL_FILE;
+			echo "$ dnf install ${PACKAGE_LOCAL_FILE}";
+			dnf install "${PACKAGE_LOCAL_FILE}";
 
 		else
-			echo "$ dpkg -i $PACKAGE_LOCAL_FILE";
-			dpkg -i --force-confnew $PACKAGE_LOCAL_FILE;
+			echo "$ dpkg -i ${PACKAGE_LOCAL_FILE}";
+			dpkg -i --force-confnew "${PACKAGE_LOCAL_FILE}";
 		fi
 		echo;
 
 	else
 
-		echo "# $PACKAGE_INSTALL_TYPE package: $PACKAGE_NAME ($PACKAGE_VERSION) not found. ";
+		echo "# ${PACKAGE_INSTALL_TYPE} package: ${PACKAGE_NAME} (${PACKAGE_VERSION}) not found. ";
 		echo;
 	fi
 
@@ -178,38 +178,38 @@ if [ "$ACTION" = "install" ]; then
 elif [ "$ACTION" = "search" ]; then
 
   	echo "$ $APT_SEARCH $2 ... ";
-  	$APT_SEARCH $2;
+  	${APT_SEARCH} $2;
 
 # show package detail
 elif [ "$ACTION" = "show" ] || [ "$ACTION" = "info" ]; then
 
 	echo "$ $APT_SHOW $2 ... ";
-  	$APT_SHOW $2;
+  	${APT_SHOW} $2;
 
 # update package list
 elif [ "$ACTION" = "update" ] || [ "$ACTION" = "check-update" ]; then
 
 	echo "$ $APT_UPDATE ... ";
- 	$SUDO $APT_UPDATE
+ 	${SUDO} ${APT_UPDATE}
 
 # upgrade all package
 elif [ "$ACTION" = "upgrade" ]; then
 
 	echo "$ $APT_UPGRADE ... ";
- 	$SUDO $APT_UPGRADE
+ 	${SUDO} ${APT_UPGRADE}
 
 # remove
 elif [ "$ACTION" = "remove" ]; then
 
   	echo "$ $APT_REMOVE $2 ... ";
-  	$SUDO $APT_REMOVE $2;
+  	${SUDO} ${APT_REMOVE} $2;
 
 # build
 elif [ "$ACTION" = "build" ]; then
 
 	# clean
-	rm -f .captainci-${PACKAGE_EXT}-*
-	rm -f .${PACKAGE_EXT}-*
+	rm -f ".captainci-${PACKAGE_EXT}-*"
+	rm -f ".${PACKAGE_EXT}-*"
 
 	# template
 	echo "$ captainci-template "
@@ -245,11 +245,11 @@ elif [ "$ACTION" = "build" ]; then
 	echo "$ debian/prebuild "
 	if [ -f "debian/prebuild" ]; then
 		chmod 755 debian/prebuild
-		$FAKEROOT ./debian/prebuild
+		${FAKEROOT} ./debian/prebuild
 	else
 		cp /opt/captainci/debian/prebuild debian/
 		chmod 755 debian/prebuild
-		$FAKEROOT ./debian/prebuild
+		${FAKEROOT} ./debian/prebuild
 		rm debian/prebuild
 	fi
 	echo
@@ -258,11 +258,11 @@ elif [ "$ACTION" = "build" ]; then
 	echo "$ debian/build "
 	if [ -f "debian/build" ]; then
 		chmod 755 debian/build
-		$FAKEROOT ./debian/build
+		${FAKEROOT} ./debian/build
 	else
 		cp /opt/captainci/debian/build debian/
 		chmod 755 debian/build
-		$FAKEROOT ./debian/build
+		${FAKEROOT} ./debian/build
 		rm debian/build
 	fi
 	echo
@@ -271,7 +271,7 @@ elif [ "$ACTION" = "build" ]; then
 	if [ -f "debian/rules" ]; then
 		echo "$ debian/rules "
 		chmod 755 debian/rules
-		$FAKEROOT ./debian/rules binary
+		${FAKEROOT} ./debian/rules binary
 		echo
 	fi
 
@@ -279,11 +279,11 @@ elif [ "$ACTION" = "build" ]; then
 	echo "$ debian/postbuild "
 	if [ -f "debian/postbuild" ]; then
 		chmod 755 debian/postbuild
-		$FAKEROOT ./debian/postbuild
+		${FAKEROOT} ./debian/postbuild
 	else
 		cp /opt/captainci/debian/postbuild debian/
 		chmod 755 debian/postbuild
-		$FAKEROOT ./debian/postbuild
+		${FAKEROOT} ./debian/postbuild
 		rm debian/postbuild
 	fi
 	echo
@@ -301,8 +301,8 @@ elif [ "$ACTION" = "build" ]; then
 elif [ "$ACTION" = "clean" ]; then
 
 	# clean
-	rm -f .captainci-${PACKAGE_EXT}-*
-	rm -f .${PACKAGE_EXT}-*
+	rm -f ".captainci-${PACKAGE_EXT}-*"
+	rm -f ".${PACKAGE_EXT}-*"
 
 # help
 elif [ "$ACTION" = "help" ]; then
