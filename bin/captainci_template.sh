@@ -48,7 +48,7 @@ elif [ -f "/etc/os-release" ]; then
 	DISTFILE="/etc/os-release";
 	
 else
-	echo "Unsupported linux distribution. exit";
+	echo "captainci-template: Unsupported linux distribution. exit";
 	exit;
 fi
 
@@ -63,9 +63,9 @@ else
 	CAPTAINCI_PACKAGE_AUTHOR=$(cat debian/control.captainci | grep "Maintainer:" | cut -d":" -f2 | cut -d "<" -f1)
 fi;
 
-CAPTAINCI_PACKAGE_GROUP=$(echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f1)
-CAPTAINCI_PACKAGE_USER=$(echo $CAPTAINCI_PACKAGE_NAME | cut -d"-" -f2)
-CAPTAINCI_PACKAGE_DIR="\/opt\/$CAPTAINCI_PACKAGE_GROUP\/$CAPTAINCI_PACKAGE_USER"
+CAPTAINCI_PACKAGE_GROUP=$(echo ${CAPTAINCI_PACKAGE_NAME} | cut -d"-" -f1)
+CAPTAINCI_PACKAGE_USER=$(echo ${CAPTAINCI_PACKAGE_NAME} | cut -d"-" -f2)
+CAPTAINCI_PACKAGE_DIR="\/opt\/${CAPTAINCI_PACKAGE_GROUP}\/${CAPTAINCI_PACKAGE_USER}"
 
 CAPTAINCI_DOMAIN="captainci.com"
 
@@ -77,18 +77,18 @@ CAPTAINCI_DOMAIN="captainci.com"
 #echo
 
 # files
-for origfile in $(find . | grep ".captainci" | grep -v ".captainci.yml"); do
+for origfile in $(find . | grep "\.captainci" | grep -v "\.captainci-" | grep -v "\.captainci.yml" | grep -v "\.sh"); do
 
 	savefile=$(echo $origfile | rev |  cut -d"." -f2,3,4 | rev)
 
 	if [ "$savefile" != "./" ]; then
 		echo "* '$origfile' -> '$savefile' "
-		sed -e "s/{{CAPTAINCI_PACKAGE_NAME}}/$CAPTAINCI_PACKAGE_NAME/g"  \
-		    -e "s/{{CAPTAINCI_PACKAGE_GROUP}}/$CAPTAINCI_PACKAGE_GROUP/g" \
-		    -e "s/{{CAPTAINCI_PACKAGE_USER}}/$CAPTAINCI_PACKAGE_USER/g" \
-		    -e "s/{{CAPTAINCI_PACKAGE_VERSION}}/$CAPTAINCI_PACKAGE_VERSION/g" \
-		    -e "s/{{CAPTAINCI_DOMAIN}}/$CAPTAINCI_DOMAIN/g" \
-		    -e "s/{{CAPTAINCI_PACKAGE_DIR}}/$CAPTAINCI_PACKAGE_DIR/g" $origfile > $savefile;
+		sed -e "s/{{CAPTAINCI_PACKAGE_NAME}}/${CAPTAINCI_PACKAGE_NAME}/g"  \
+		    -e "s/{{CAPTAINCI_PACKAGE_GROUP}}/${CAPTAINCI_PACKAGE_GROUP}/g" \
+		    -e "s/{{CAPTAINCI_PACKAGE_USER}}/${CAPTAINCI_PACKAGE_USER}/g" \
+		    -e "s/{{CAPTAINCI_PACKAGE_VERSION}}/${CAPTAINCI_PACKAGE_VERSION}/g" \
+		    -e "s/{{CAPTAINCI_DOMAIN}}/${CAPTAINCI_DOMAIN}/g" \
+		    -e "s/{{CAPTAINCI_PACKAGE_DIR}}/${CAPTAINCI_PACKAGE_DIR}/g" "${origfile}" > "${savefile}";
 	fi
 
 done;

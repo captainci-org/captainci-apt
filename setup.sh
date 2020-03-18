@@ -83,6 +83,7 @@ echo "done."
 echo -n "* script install ... "
 sudo cp -v $TMP_DIR/bin/*.sh        $INST_DIR/bin/.
 sudo cp -v $TMP_DIR/debian/*build*  $INST_DIR/debian/.
+sudo cp -v $TMP_DIR/debian/compat   $INST_DIR/debian/.
 sudo chmod 755 $INST_DIR/bin/*.sh
 echo "done."
 

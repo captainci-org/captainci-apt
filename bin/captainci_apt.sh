@@ -140,11 +140,11 @@ if [ "$ACTION" = "install" ]; then
 		else
 		
 			# clean
-			rm -f /tmp/${PACKAGE_FILE};
+			rm -f "/tmp/${PACKAGE_FILE}";
 
 			echo -n "* download package: $PACKAGE_FILE ... ";
 			PACKAGE_INSTALL_TYPE="net"
-			wget -q  ${PACKAGE_APT}/local/pool/local/${PACKAGE_DIR1}/${PACKAGE_NAME}/${PACKAGE_FILE};
+			wget -q  "${PACKAGE_APT}/local/pool/local/${PACKAGE_DIR1}/${PACKAGE_NAME}/${PACKAGE_FILE}";
 		fi	
 		
 		echo ".done";
@@ -157,7 +157,7 @@ if [ "$ACTION" = "install" ]; then
 		echo "# $PACKAGE_INSTALL_TYPE install package: $PACKAGE_NAME ($PACKAGE_VERSION) ... ";
 		if [ "$DISTNAME" = "redhat" ] || [ "$DISTNAME" = "centos" ]; then
 			echo "$ yum install $PACKAGE_LOCAL_FILE";
-			yum install $PACKAGE_LOCAL_FILE;
+			yum install "${PACKAGE_LOCAL_FILE}";
 		elif [ "$DISTNAME" = "fedora" ]; then
 			echo "$ dnf install ${PACKAGE_LOCAL_FILE}";
 			dnf install "${PACKAGE_LOCAL_FILE}";
