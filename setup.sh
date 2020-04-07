@@ -99,11 +99,11 @@ sudo rm -rf $TMP_DIR
 echo "done."
 
 echo -n "* changelog.md ... "
-wget -O - https://raw.githubusercontent.com/erikni/debian-changelog.md/develop/setup.sh | bash
+sudo wget -O - https://raw.githubusercontent.com/erikni/debian-changelog.md/develop/setup.sh | bash
 echo "done."
 
 echo -n "* gitlog ... "
-wget -O - https://raw.githubusercontent.com/captainci-org/captainci-gitlog/develop/setup.sh | bash
+sudo wget -O - https://raw.githubusercontent.com/captainci-org/captainci-gitlog/develop/setup.sh | bash
 echo "done."
 
 echo
