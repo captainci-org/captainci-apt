@@ -88,10 +88,10 @@ sudo chmod 755 $INST_DIR/bin/*.sh
 echo "done."
 
 echo -n "* symlink install ... "
-rm -f /usr/bin/$GIT_REPO
-rm -f /usr/bin/captainci-template
-ln -s $INST_DIR/bin/captainci_apt.sh /usr/bin/$GIT_REPO
-ln -s $INST_DIR/bin/captainci_template.sh /usr/bin/captainci-template
+sudo rm -f /usr/bin/$GIT_REPO
+sudo rm -f /usr/bin/captainci-template
+sudo ln -s $INST_DIR/bin/captainci_apt.sh /usr/bin/$GIT_REPO
+sudo ln -s $INST_DIR/bin/captainci_template.sh /usr/bin/captainci-template
 echo "done."
 
 echo -n "* clean ... "
