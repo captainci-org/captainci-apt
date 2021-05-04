@@ -4,11 +4,14 @@
 rm -f *.deb-*
 rm -f *.captainci-deb-*
 
+# now
+GIT_DATE=$(date '+%Y%m%d%H%M%S')
+
 # git branch
 GIT_BRANCH=""
 GIT_BRANCH_FILE=".captainci-env-GIT_BRANCH"
 if [ -f "$GIT_BRANCH_FILE" ]; then
-        GIT_BRANCH='+'`cat $GIT_BRANCH_FILE | tr -d '\n'`
+        GIT_BRANCH="+$(cat $GIT_BRANCH_FILE | tr -d '\n')-${GIT_DATE}"
 fi
 
 # debian/changelog
